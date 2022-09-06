@@ -3,7 +3,7 @@
 
 ## 기능 구현 List
 1. 회원가입
-    -
+    - asdfasdf
     - ID 중복 검증 검사
     - PW 및 PW Confirm 유효성 검사 (기능 구현 예정) 
 2. 게시글 작성
