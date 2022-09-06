@@ -34,7 +34,7 @@ public class PostService {
   @Transactional
   public ResponseDto<?> createPost(PostRequestDto requestDto, HttpServletRequest request) {
     // 작성자 검증
-    if (null == request.getHeader("Refresh-Token")) {
+    if (null == request.getHeader("RefreshToken")) {
       return ResponseDto.fail("MEMBER_NOT_FOUND",
           "로그인이 필요합니다.");
     }
@@ -132,7 +132,7 @@ public class PostService {
 
   @Transactional
   public ResponseDto<String> updatePost(Long id, PostRequestDto requestDto, HttpServletRequest request) {
-    if (null == request.getHeader("Refresh-Token")) {
+    if (null == request.getHeader("RefreshToken")) {
       return ResponseDto.fail("MEMBER_NOT_FOUND",
           "로그인이 필요합니다.");
     }
@@ -163,7 +163,7 @@ public class PostService {
 
   @Transactional
   public ResponseDto<?> deletePost(Long id, HttpServletRequest request) {
-    if (null == request.getHeader("Refresh-Token")) {
+    if (null == request.getHeader("RefreshToken")) {
       return ResponseDto.fail("MEMBER_NOT_FOUND",
           "로그인이 필요합니다.");
     }
@@ -199,7 +199,7 @@ public class PostService {
 
   @Transactional
   public Member validateMember(HttpServletRequest request) {
-    if (!tokenProvider.validateToken(request.getHeader("Refresh-Token"))) {
+    if (!tokenProvider.validateToken(request.getHeader("RefreshToken"))) {
       return null;
     }
     return tokenProvider.getMemberFromAuthentication();

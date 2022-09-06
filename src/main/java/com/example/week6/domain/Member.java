@@ -56,6 +56,7 @@ public class Member extends Timestamped {
     return getClass().hashCode();
   }
 
+  // 요청으로 들어온 PW와 DB에 존재하는 PW 비교 검증
   public boolean validatePassword(PasswordEncoder passwordEncoder, String password) {
     return passwordEncoder.matches(password, this.password);
   }
