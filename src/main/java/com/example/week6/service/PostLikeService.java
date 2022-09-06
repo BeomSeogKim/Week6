@@ -65,7 +65,7 @@ public class PostLikeService {
 
     @Transactional
     public Member validateMember(HttpServletRequest request) {
-        if (!tokenProvider.validateToken(request.getHeader("Refresh-Token"))) {
+        if (!tokenProvider.validateToken(request.getHeader("RefreshToken"))) {
             return null;
         }
         return tokenProvider.getMemberFromAuthentication();

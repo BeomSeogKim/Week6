@@ -38,6 +38,19 @@ public class SecurityConfiguration {
     return new BCryptPasswordEncoder();
   }
 
+//  @Bean
+//  CorsConfigurationSource corsConfigurationSource() {
+//    CorsConfiguration configuration = new CorsConfiguration();
+//    configuration.addAllowedOrigin("http://localhost:3000");
+//    configuration.setAllowedMethods(Arrays.asList("GET","POST", "OPTIONS", "PUT","DELETE"));
+//    configuration.setAllowCredentials(true);
+//    configuration.setAllowedHeaders(Arrays.asList("*"));
+//    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//    source.registerCorsConfiguration("/**", configuration);
+//    return source;
+//  }
+
+
   @Bean
   @Order(SecurityProperties.BASIC_AUTH_ORDER)
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -45,23 +58,22 @@ public class SecurityConfiguration {
 
     http.csrf().disable()
 
-        .exceptionHandling()
-        .authenticationEntryPoint(authenticationEntryPointException)
-        .accessDeniedHandler(accessDeniedHandlerException)
+            .exceptionHandling()
+            .authenticationEntryPoint(authenticationEntryPointException)
+            .accessDeniedHandler(accessDeniedHandlerException)
 
-        .and()
-        .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
-        .and()
-        .authorizeRequests()
-        .antMatchers("/api/**").permitAll()
-//        .antMatchers("/api/post/**").permitAll()
-//        .antMatchers("/api/comment/**").permitAll()
-        .anyRequest().authenticated()
+            .and()
+            .authorizeRequests()
+//            .antMatchers("/api/**").permitAll()
+            .antMatchers("/api/member/**").permitAll()
+            .anyRequest().authenticated()
 
-        .and()
-        .apply(new JwtSecurityConfiguration(SECRET_KEY, tokenProvider, userDetailsService));
+            .and()
+            .apply(new JwtSecurityConfiguration(SECRET_KEY, tokenProvider, userDetailsService));
 
     return http.build();
   }

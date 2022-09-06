@@ -1,9 +1,12 @@
 package com.example.week6.service;
 
 
+import ch.qos.logback.core.joran.conditional.IfAction;
+import com.example.week6.controller.request.DuplicateRequestDto;
 import com.example.week6.controller.request.LoginRequestDto;
 import com.example.week6.controller.request.MemberRequestDto;
 import com.example.week6.controller.request.TokenDto;
+import com.example.week6.controller.response.DuplicateResponseDto;
 import com.example.week6.controller.response.MemberResponseDto;
 import com.example.week6.controller.response.ResponseDto;
 import com.example.week6.domain.Member;
@@ -109,7 +112,7 @@ public class MemberService {
 //  }
 
   public ResponseDto<?> logout(HttpServletRequest request) {
-    if (!tokenProvider.validateToken(request.getHeader("Refresh-Token"))) {
+    if (!tokenProvider.validateToken(request.getHeader("RefreshToken"))) {
       return ResponseDto.fail("INVALID_TOKEN", "Token이 유효하지 않습니다.");
     }
     Member member = tokenProvider.getMemberFromAuthentication();
@@ -129,8 +132,20 @@ public class MemberService {
 
   public void tokenToHeaders(TokenDto tokenDto, HttpServletResponse response) {
     response.addHeader("Authorization", "Bearer " + tokenDto.getAccessToken());
-    response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
+    response.addHeader("RefreshToken", tokenDto.getRefreshToken());
     response.addHeader("Access-Token-Expire-Time", tokenDto.getAccessTokenExpiresIn().toString());
   }
 
+  public ResponseDto<?> checkDuplicate(DuplicateRequestDto requestDto) {
+
+    // 회원 이름으로 조회 시 없을 때
+    if (memberRepository.findByusername(requestDto.getUsername()).isEmpty()) {
+      return ResponseDto.success(
+              DuplicateResponseDto.builder()
+                      .username(requestDto.getUsername())
+                      .build()
+      );
+    }
+    return ResponseDto.fail("ALREADY_EXISTS", "이미 존재하는 회원입니다.");
+  }
 }
