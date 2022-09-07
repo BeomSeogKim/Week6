@@ -1,7 +1,8 @@
 package com.example.week6.domain;
 
-import com.example.week6.controller.request.post.PostRequestDto;
+import com.example.week6.controller.request.PostRequestDto;
 import lombok.*;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,7 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 public class Post extends Timestamped {
-
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,6 +44,7 @@ public class Post extends Timestamped {
   private int numberOfWatch;    // 상세 게시글 조회수
 
 
+  //== Constructor ==//
   public Post(Member getMember, String title, String content, String imageUrl, String imageFileName) {
     this.member = getMember;
     this.title = title;
@@ -52,7 +53,8 @@ public class Post extends Timestamped {
     this.imageFilename = imageFileName;
   }
 
-//  == 연관관계 메서드 ==//
+
+  //  == 연관관계 메서드 ==//
   public void setMember(Member member) {
     this.member = member;
     member.getPosts().add(this);

@@ -1,6 +1,6 @@
 package com.example.week6.domain;
 
-import com.example.week6.controller.request.comment.CommentRequestDto;
+import com.example.week6.controller.request.CommentRequestDto;
 import lombok.*;
 
 import javax.persistence.*;

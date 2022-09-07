@@ -21,24 +21,31 @@ public class LikeController {
 
     /**
      * 게시글 좋아요
-     *
-     * @param id : 게시글 아이디
      */
     @PostMapping("/api/like/post/{id}")
     public ResponseDto<?> likePost(@PathVariable Long id, HttpServletRequest request) {
         return postLikeService.likePost(id, request);
     }
 
+    /**
+     * 게시글 좋아요 취소
+     */
     @PostMapping("/api/dislike/post/{id}")
     public ResponseDto<?> dislikePost(@PathVariable Long id, HttpServletRequest request) {
         return postLikeService.dislikePost(id, request);
     }
 
+    /**
+     * 댓글 좋아요
+     */
     @PostMapping("/api/like/comment/{id}")
     public ResponseDto<?> likeComment(@PathVariable Long id, HttpServletRequest request) {
         return commentLikeService.likeComment(id, request);
     }
 
+    /**
+     * 댓글 좋아요 취소
+     */
     @PostMapping("/api/dislike/comment/{id}")
     public ResponseDto<?> dislikeComment(@PathVariable Long id, HttpServletRequest request) {
         return commentLikeService.dislikeComment(id, request);

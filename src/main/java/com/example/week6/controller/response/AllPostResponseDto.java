@@ -1,4 +1,4 @@
-package com.example.week6.controller.response.post;
+package com.example.week6.controller.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

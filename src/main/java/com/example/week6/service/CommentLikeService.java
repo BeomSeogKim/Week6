@@ -1,6 +1,7 @@
 package com.example.week6.service;
 
 
+import com.example.week6.controller.Qualify;
 import com.example.week6.controller.response.ResponseDto;
 import com.example.week6.domain.*;
 import com.example.week6.jwt.TokenProvider;
@@ -20,10 +21,11 @@ public class CommentLikeService {
     private final CommentRepository commentRepository;
     private final CommentLikeRepository commentLikeRepository;
     private final TokenProvider tokenProvider;
+    private final Qualify qualify;
 
     public ResponseDto<?> likeComment(Long id, HttpServletRequest request) {
-        Comment comment = isPresentComment(id);
-        Member member = validateMember(request);
+        Comment comment = qualify.isPresentComment(id);
+        Member member = qualify.validateMember(request);
 
         // 토큰 검증
         if (null == request.getHeader("RefreshToken")) {
@@ -59,8 +61,8 @@ public class CommentLikeService {
 
 
     public ResponseDto<?> dislikeComment(Long id, HttpServletRequest request) {
-        Comment comment = isPresentComment(id);
-        Member member = validateMember(request);
+        Comment comment = qualify.isPresentComment(id);
+        Member member = qualify.validateMember(request);
 
         // 댓글 검증
         if (null == comment) {
@@ -73,20 +75,6 @@ public class CommentLikeService {
             return ResponseDto.success("좋아요 취소.");
         }
         return ResponseDto.fail("DIDNT_LIKE", "좋아요를 누르시지 않으셨습니다. ");
-    }
-
-    @Transactional(readOnly = true)
-    public Comment isPresentComment(Long id) {
-        Optional<Comment> optionalComment = commentRepository.findById(id);
-        return optionalComment.orElse(null);
-    }
-
-    @Transactional
-    public Member validateMember(HttpServletRequest request) {
-        if (!tokenProvider.validateToken(request.getHeader("RefreshToken"))) {
-            return null;
-        }
-        return tokenProvider.getMemberFromAuthentication();
     }
 
     private boolean isNotAlreadyLike(Member member, Comment comment) {

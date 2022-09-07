@@ -1,14 +1,17 @@
-package com.example.week6.controller.response.member;
+package com.example.week6.controller.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DuplicateResponseDto {
-    private String username;
+public class MemberResponseDto {
+  private Long id;
+  private String username;
 }

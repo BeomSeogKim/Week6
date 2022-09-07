@@ -2,10 +2,11 @@ package com.example.week6.service;
 
 
 import com.example.week6.AWSS3.AwsS3Service;
-import com.example.week6.controller.request.post.PostRequestDto;
-import com.example.week6.controller.response.*;
-import com.example.week6.controller.response.comment.CommentResponseDto;
-import com.example.week6.controller.response.post.AllPostResponseDto;
+import com.example.week6.controller.request.PostRequestDto;
+import com.example.week6.controller.response.ResponseDto;
+import com.example.week6.controller.response.TemporaryPostResponseDto;
+import com.example.week6.controller.response.CommentResponseDto;
+import com.example.week6.controller.response.AllPostResponseDto;
 import com.example.week6.domain.Comment;
 import com.example.week6.domain.Member;
 import com.example.week6.domain.Post;
@@ -168,6 +169,44 @@ public class PostService {
     return ResponseDto.success("성공적으로 수정되었습니다.");
   }
 
+//    @Transactional
+//  public ResponseDto<String> updatePost(Long id, MultipartFile multipartFile, String title, String content, HttpServletRequest request) {
+//    // 회원정보 및 토큰 검증
+//    if (null == request.getHeader("RefreshToken")) {
+//      return ResponseDto.fail("MEMBER_NOT_FOUND",
+//              "로그인이 필요합니다.");
+//    }
+//
+//    if (null == request.getHeader("Authorization")) {
+//      return ResponseDto.fail("MEMBER_NOT_FOUND",
+//              "로그인이 필요합니다.");
+//    }
+//
+//    Member member = validateMember(request);
+//    if (null == member) {
+//      return ResponseDto.fail("INVALID_TOKEN", "Token이 유효하지 않습니다.");
+//    }
+//    // 게시글 존재 여부 검증
+//    Post post = isPresentPost(id);
+//    if (null == post) {
+//      return ResponseDto.fail("NOT_FOUND", "존재하지 않는 게시글 id 입니다.");
+//    }
+//    // 작성자 여부 검증
+//    if (post.validateMember(member)) {
+//      return ResponseDto.fail("BAD_REQUEST", "작성자만 수정할 수 있습니다.");
+//    }
+//
+//    post.update();
+//
+//    return ResponseDto.success("성공적으로 수정되었습니다.");
+//  }
+
+
+  //Post post = new Post(member,title, content, map.get("url"), map.get("fileName"));
+
+
+
+
   @Transactional
   public ResponseDto<?> deletePost(Long id, HttpServletRequest request) {
     if (null == request.getHeader("RefreshToken")) {
@@ -213,21 +252,15 @@ public class PostService {
   }
 
   @Transactional
-  public ResponseEntity save(MultipartFile multipartFile, String title, String content, HttpServletRequest request) {
-    System.out.println("=========1=============");
+  public ResponseDto<?> save(MultipartFile multipartFile, String title, String content, HttpServletRequest request) {
     Map<String, String> map = awsS3Service.uploadFile(multipartFile);
-    System.out.println("=========2=============");
     Member member = validateMember(request);
     if (member == null) {
-      System.out.println("member가 유효하지 않아!!!!!!");
-      return new ResponseEntity("유효하지 않은 토큰입니다.", HttpStatus.BAD_REQUEST);
+      return ResponseDto.fail("NOT_VALID_TOKEN", "유효한 토큰이 아닙니다.");
     }
-    System.out.println("=========3=============");
     System.out.println(member.getId());
-//    Post post = new Post(member,requestDto, map.get("url"), map.get("fileName"));
     Post post = new Post(member,title, content, map.get("url"), map.get("fileName"));
-    System.out.println("=========4=============");
     postRepository.save(post);
-    return new ResponseEntity("게시글 저장이 정상적으로 완료되었습니다.", HttpStatus.OK);
+    return ResponseDto.success("성공적으로 게시글 작성이 완료되었습니다.");
   }
 }

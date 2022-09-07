@@ -1,8 +1,9 @@
 package com.example.week6.service;
 
+import com.example.week6.controller.Qualify;
 import com.example.week6.controller.response.*;
-import com.example.week6.controller.response.comment.CommentResponseDto;
-import com.example.week6.controller.response.post.AllPostResponseDto;
+import com.example.week6.controller.response.CommentResponseDto;
+import com.example.week6.controller.response.AllPostResponseDto;
 import com.example.week6.domain.*;
 import com.example.week6.jwt.TokenProvider;
 import com.example.week6.repository.CommentLikeRepository;
@@ -26,6 +27,7 @@ public class MypageService {
     private final CommentRepository commentRepository;
     private final PostLikeRepository postLikeRepository;
     private final CommentLikeRepository commentLikeRepository;
+    private final Qualify qualify;
 
     // 내가 누른 좋아요 게시글 들 페이지들 가져오기
     // 내가 작성한 게시글 가져오기
@@ -44,7 +46,7 @@ public class MypageService {
         }
 
         // 회원 정보 가져오기
-        Member member = validateMember(request);
+        Member member =qualify.validateMember(request);
 
         if (null == member) {
             return ResponseDto.fail("INVALID_TOKEN", "Token이 유효하지 않습니다.");
@@ -125,13 +127,5 @@ public class MypageService {
                         .build()
         );
 
-    }
-
-    @Transactional
-    public Member validateMember(HttpServletRequest request) {
-        if (!tokenProvider.validateToken(request.getHeader("RefreshToken"))) {
-            return null;
-        }
-        return tokenProvider.getMemberFromAuthentication();
     }
 }

@@ -1,6 +1,6 @@
 package com.example.week6.jwt;
 
-import com.example.week6.controller.request.token.TokenDto;
+import com.example.week6.controller.request.TokenDto;
 import com.example.week6.controller.response.ResponseDto;
 import com.example.week6.domain.Member;
 import com.example.week6.domain.RefreshToken;
@@ -38,7 +38,7 @@ public class TokenProvider {
 //  private final UserDetailsServiceImpl userDetailsService;
 
   public TokenProvider(@Value("${jwt.secret}") String secretKey,
-      RefreshTokenRepository refreshTokenRepository) {
+                       RefreshTokenRepository refreshTokenRepository) {
     this.refreshTokenRepository = refreshTokenRepository;
     byte[] keyBytes = Decoders.BASE64.decode(secretKey);
     this.key = Keys.hmacShaKeyFor(keyBytes);
@@ -50,35 +50,35 @@ public class TokenProvider {
     Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
     /**
      * AccessToken 생성
-      */
+     */
     String accessToken = Jwts.builder()
-        .setSubject(member.getUsername())
-        .claim(AUTHORITIES_KEY, Authority.ROLE_MEMBER.toString())
-        .setExpiration(accessTokenExpiresIn)
-        .signWith(key, SignatureAlgorithm.HS256)
-        .compact();
+            .setSubject(member.getUsername())
+            .claim(AUTHORITIES_KEY, Authority.ROLE_MEMBER.toString())
+            .setExpiration(accessTokenExpiresIn)
+            .signWith(key, SignatureAlgorithm.HS256)
+            .compact();
     /**
      * RefreshToken 생성
      */
     String refreshToken = Jwts.builder()
-        .setExpiration(new Date(now + REFRESH_TOKEN_EXPRIRE_TIME))
-        .signWith(key, SignatureAlgorithm.HS256)
-        .compact();
+            .setExpiration(new Date(now + REFRESH_TOKEN_EXPRIRE_TIME))
+            .signWith(key, SignatureAlgorithm.HS256)
+            .compact();
 
     RefreshToken refreshTokenObject = RefreshToken.builder()
-        .id(member.getId())
-        .member(member)
-        .value(refreshToken)
-        .build();
+            .id(member.getId())
+            .member(member)
+            .value(refreshToken)
+            .build();
 
     refreshTokenRepository.save(refreshTokenObject);
 
     return TokenDto.builder()
-        .grantType(BEARER_PREFIX)
-        .accessToken(accessToken)
-        .accessTokenExpiresIn(accessTokenExpiresIn.getTime())
-        .refreshToken(refreshToken)
-        .build();
+            .grantType(BEARER_PREFIX)
+            .accessToken(accessToken)
+            .accessTokenExpiresIn(accessTokenExpiresIn.getTime())
+            .refreshToken(refreshToken)
+            .build();
 
   }
 
@@ -102,7 +102,7 @@ public class TokenProvider {
   public Member getMemberFromAuthentication() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (authentication == null || AnonymousAuthenticationToken.class.
-        isAssignableFrom(authentication.getClass())) {
+            isAssignableFrom(authentication.getClass())) {
       return null;
     }
     return ((UserDetailsImpl) authentication.getPrincipal()).getMember();
@@ -123,7 +123,15 @@ public class TokenProvider {
     }
     return false;
   }
-  
+
+//  private Claims parseClaims(String accessToken) {
+//    try {
+//      return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
+//    } catch (ExpiredJwtException e) {
+//      return e.getClaims();
+//    }
+//  }
+
   @Transactional(readOnly = true)
   public RefreshToken isPresentRefreshToken(Member member) {
     Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findByMember(member);

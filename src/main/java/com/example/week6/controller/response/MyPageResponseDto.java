@@ -1,8 +1,6 @@
 package com.example.week6.controller.response;
 
 
-import com.example.week6.controller.response.comment.CommentResponseDto;
-import com.example.week6.controller.response.post.AllPostResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

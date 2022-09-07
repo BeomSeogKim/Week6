@@ -1,7 +1,7 @@
 package com.example.week6.service;
 
-import com.example.week6.controller.request.comment.CommentRequestDto;
-import com.example.week6.controller.response.comment.CommentResponseDto;
+import com.example.week6.controller.request.CommentRequestDto;
+import com.example.week6.controller.response.CommentResponseDto;
 import com.example.week6.controller.response.ResponseDto;
 import com.example.week6.domain.Comment;
 import com.example.week6.domain.Member;

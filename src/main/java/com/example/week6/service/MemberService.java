@@ -1,13 +1,14 @@
 package com.example.week6.service;
 
 
-import com.example.week6.controller.request.member.DuplicateRequestDto;
-import com.example.week6.controller.request.member.LoginRequestDto;
-import com.example.week6.controller.request.member.MemberRequestDto;
-import com.example.week6.controller.request.token.TokenDto;
-import com.example.week6.controller.response.member.DuplicateResponseDto;
-import com.example.week6.controller.response.member.MemberResponseDto;
+import com.example.week6.controller.Qualify;
+import com.example.week6.controller.request.DuplicateRequestDto;
+import com.example.week6.controller.request.LoginRequestDto;
+import com.example.week6.controller.request.MemberRequestDto;
+import com.example.week6.controller.request.TokenDto;
 import com.example.week6.controller.response.ResponseDto;
+import com.example.week6.controller.response.DuplicateResponseDto;
+import com.example.week6.controller.response.MemberResponseDto;
 import com.example.week6.domain.Member;
 import com.example.week6.jwt.TokenProvider;
 import com.example.week6.repository.MemberRepository;
@@ -18,123 +19,99 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
 public class MemberService {
 
   private final MemberRepository memberRepository;
-
   private final PasswordEncoder passwordEncoder;
-//  private final AuthenticationManagerBuilder authenticationManagerBuilder;
   private final TokenProvider tokenProvider;
+  private final Qualify qualify;
 
+  /**
+   * 회원 생성
+   */
   @Transactional
   public ResponseDto<?> createMember(MemberRequestDto requestDto) {
-    if (null != isPresentMember(requestDto.getUsername())) {
+    // 회원 닉네임 검증
+    if (null != qualify.isPresentMember(requestDto.getUsername())) {
       return ResponseDto.fail("DUPLICATED_username",
           "중복된 닉네임 입니다.");
     }
 
+    // 비밀번호 및 비밀번호 확인 유효성 검사
     if (!requestDto.getPassword().equals(requestDto.getPasswordConfirm())) {
       return ResponseDto.fail("PASSWORDS_NOT_MATCHED",
           "비밀번호와 비밀번호 확인이 일치하지 않습니다.");
     }
 
+    // 회원 객체 생성
     Member member = Member.builder()
-            .username(requestDto.getUsername())
-                .password(passwordEncoder.encode(requestDto.getPassword()))
+                    .username(requestDto.getUsername())
+                    .password(passwordEncoder.encode(requestDto.getPassword()))
                     .build();
+    // 회원 저장
     memberRepository.save(member);
+
     return ResponseDto.success(
         MemberResponseDto.builder()
             .id(member.getId())
             .username(member.getUsername())
-            .createdAt(member.getCreatedAt())
-            .modifiedAt(member.getModifiedAt())
             .build()
     );
   }
 
+  /**
+   * 로그인
+   */
   @Transactional
   public ResponseDto<?> login(LoginRequestDto requestDto, HttpServletResponse response) {
-    Member member = isPresentMember(requestDto.getUsername());
+    // 회원 id 검사
+    Member member = qualify.isPresentMember(requestDto.getUsername());
     if (null == member) {
       return ResponseDto.fail("MEMBER_NOT_FOUND",
           "사용자를 찾을 수 없습니다.");
     }
-
+    // 회원 password 일치 여부 검사
     if (!member.validatePassword(passwordEncoder, requestDto.getPassword())) {
       return ResponseDto.fail("INVALID_MEMBER", "사용자를 찾을 수 없습니다.");
     }
 
-//    UsernamePasswordAuthenticationToken authenticationToken =
-//        new UsernamePasswordAuthenticationToken(requestDto.getusername(), requestDto.getPassword());
-//    Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-
+    // 토큰 발급
     TokenDto tokenDto = tokenProvider.generateTokenDto(member);
-    tokenToHeaders(tokenDto, response);
+    qualify.tokenToHeaders(tokenDto, response);
+//    tokenToHeaders(tokenDto, response);
 
     return ResponseDto.success(
-        MemberResponseDto.builder()
-            .id(member.getId())
-            .username(member.getUsername())
-            .createdAt(member.getCreatedAt())
-            .modifiedAt(member.getModifiedAt())
-            .build()
+              MemberResponseDto.builder()
+              .id(member.getId())
+              .username(member.getUsername())
+              .build()
     );
   }
 
-//  @Transactional
-//  public ResponseDto<?> reissue(HttpServletRequest request, HttpServletResponse response) {
-//    if (!tokenProvider.validateToken(request.getHeader("Refresh-Token"))) {
-//      return ResponseDto.fail("INVALID_TOKEN", "Token이 유효하지 않습니다.");
-//    }
-//    Member member = tokenProvider.getMemberFromAuthentication();
-//    if (null == member) {
-//      return ResponseDto.fail("MEMBER_NOT_FOUND",
-//          "사용자를 찾을 수 없습니다.");
-//    }
-//
-//    Authentication authentication = tokenProvider.getAuthentication(request.getHeader("Access-Token"));
-//    RefreshToken refreshToken = tokenProvider.isPresentRefreshToken(member);
-//
-//    if (!refreshToken.getValue().equals(request.getHeader("Refresh-Token"))) {
-//      return ResponseDto.fail("INVALID_TOKEN", "Token이 유효하지 않습니다.");
-//    }
-//
-//    TokenDto tokenDto = tokenProvider.generateTokenDto(member);
-//    refreshToken.updateValue(tokenDto.getRefreshToken());
-//    tokenToHeaders(tokenDto, response);
-//    return ResponseDto.success("success");
-//  }
-
+  /**
+   * 로그아웃
+   */
   public ResponseDto<?> logout(HttpServletRequest request) {
+    // 토큰 유효성 검사
     if (!tokenProvider.validateToken(request.getHeader("RefreshToken"))) {
       return ResponseDto.fail("INVALID_TOKEN", "Token이 유효하지 않습니다.");
     }
+    // 회원 객체 조회
     Member member = tokenProvider.getMemberFromAuthentication();
     if (null == member) {
       return ResponseDto.fail("MEMBER_NOT_FOUND",
           "사용자를 찾을 수 없습니다.");
     }
-
     return tokenProvider.deleteRefreshToken(member);
   }
 
-  @Transactional(readOnly = true)
-  public Member isPresentMember(String username) {
-    Optional<Member> optionalMember = memberRepository.findByusername(username);
-    return optionalMember.orElse(null);
-  }
 
-  public void tokenToHeaders(TokenDto tokenDto, HttpServletResponse response) {
-    response.addHeader("Authorization", "Bearer " + tokenDto.getAccessToken());
-    response.addHeader("RefreshToken", tokenDto.getRefreshToken());
-    response.addHeader("Access-Token-Expire-Time", tokenDto.getAccessTokenExpiresIn().toString());
-  }
-
+  /**
+   * 회원 닉네임 중복 검사
+   */
   public ResponseDto<?> checkDuplicate(DuplicateRequestDto requestDto) {
 
     // 회원 이름으로 조회 시 없을 때

@@ -1,5 +1,6 @@
 package com.example.week6.service;
 
+import com.example.week6.controller.Qualify;
 import com.example.week6.controller.response.ResponseDto;
 import com.example.week6.domain.Member;
 import com.example.week6.domain.Post;
@@ -12,21 +13,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class PostLikeService {
 
-    private final PostRepository postRepository;
     private final PostLikeRepository postLikeRepository;
-    private final TokenProvider tokenProvider;
+    private final Qualify qualify;
 
+    /**
+     * 게시글 좋아요
+     */
     @Transactional
     public ResponseDto<?> likePost(Long id, HttpServletRequest request) {
 
-        Post post = isPresentPost(id);
-        Member member = validateMember(request);
+        Post post = qualify.isPresentPost(id);
+        Member member = qualify.validateMember(request);
 
         // 게시글 검증
         if (null == post) {
@@ -41,9 +43,12 @@ public class PostLikeService {
         return ResponseDto.fail("ALREADY_LIKE","이미 좋아요를 누르셨습니다.");
     }
 
+    /**
+     * 게시글 좋아요 취소
+     */
     public ResponseDto<?> dislikePost(Long id, HttpServletRequest request) {
-        Post post = isPresentPost(id);
-        Member member = validateMember(request);
+        Post post = qualify.isPresentPost(id);
+        Member member = qualify.validateMember(request);
 
         // 게시글 검증
         if (null == post) {
@@ -57,20 +62,8 @@ public class PostLikeService {
         return ResponseDto.fail("DIDNT_LIKE", "좋아요를 누르시지 않으셨습니다. ");
     }
 
-    @Transactional(readOnly = true)
-    public Post isPresentPost(Long id) {
-        Optional<Post> optionalPost = postRepository.findById(id);
-        return optionalPost.orElse(null);
-    }
 
-    @Transactional
-    public Member validateMember(HttpServletRequest request) {
-        if (!tokenProvider.validateToken(request.getHeader("RefreshToken"))) {
-            return null;
-        }
-        return tokenProvider.getMemberFromAuthentication();
-    }
-
+    // 게시글 좋아요를 눌렀는지 판단하는 method
     private boolean isNotAlreadyLike(Member member, Post post) {
         return postLikeRepository.findByMemberAndPost(member, post).isEmpty();
     }

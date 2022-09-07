@@ -1,4 +1,4 @@
-package com.example.week6.controller.request.token;
+package com.example.week6.controller.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
