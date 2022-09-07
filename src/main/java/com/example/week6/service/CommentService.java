@@ -48,6 +48,7 @@ public class CommentService {
       return ResponseDto.fail("NOT_FOUND", "존재하지 않는 게시글 id 입니다.");
     }
 
+//    @todo 뭔가 개선할 여지가 보이는데 뭔지 모름
     Comment comment = Comment.builder()
         .member(member)
         .post(post)
@@ -91,7 +92,7 @@ public class CommentService {
 
   @Transactional
   public ResponseDto<?> updateComment(Long id, CommentRequestDto requestDto, HttpServletRequest request) {
-    if (null == request.getHeader("Refresh-Token")) {
+    if (null == request.getHeader("RefreshToken")) {
       return ResponseDto.fail("MEMBER_NOT_FOUND",
           "로그인이 필요합니다.");
     }
@@ -119,6 +120,7 @@ public class CommentService {
     if (comment.validateMember(member)) {
       return ResponseDto.fail("BAD_REQUEST", "작성자만 수정할 수 있습니다.");
     }
+
 
     comment.update(requestDto);
     return ResponseDto.success(
