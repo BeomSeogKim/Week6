@@ -1,13 +1,12 @@
 package com.example.week6.service;
 
 
-import ch.qos.logback.core.joran.conditional.IfAction;
-import com.example.week6.controller.request.DuplicateRequestDto;
-import com.example.week6.controller.request.LoginRequestDto;
-import com.example.week6.controller.request.MemberRequestDto;
-import com.example.week6.controller.request.TokenDto;
-import com.example.week6.controller.response.DuplicateResponseDto;
-import com.example.week6.controller.response.MemberResponseDto;
+import com.example.week6.controller.request.member.DuplicateRequestDto;
+import com.example.week6.controller.request.member.LoginRequestDto;
+import com.example.week6.controller.request.member.MemberRequestDto;
+import com.example.week6.controller.request.token.TokenDto;
+import com.example.week6.controller.response.member.DuplicateResponseDto;
+import com.example.week6.controller.response.member.MemberResponseDto;
 import com.example.week6.controller.response.ResponseDto;
 import com.example.week6.domain.Member;
 import com.example.week6.jwt.TokenProvider;

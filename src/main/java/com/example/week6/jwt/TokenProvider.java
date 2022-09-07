@@ -1,6 +1,6 @@
 package com.example.week6.jwt;
 
-import com.example.week6.controller.request.TokenDto;
+import com.example.week6.controller.request.token.TokenDto;
 import com.example.week6.controller.response.ResponseDto;
 import com.example.week6.domain.Member;
 import com.example.week6.domain.RefreshToken;
@@ -123,15 +123,7 @@ public class TokenProvider {
     }
     return false;
   }
-
-//  private Claims parseClaims(String accessToken) {
-//    try {
-//      return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
-//    } catch (ExpiredJwtException e) {
-//      return e.getClaims();
-//    }
-//  }
-
+  
   @Transactional(readOnly = true)
   public RefreshToken isPresentRefreshToken(Member member) {
     Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findByMember(member);

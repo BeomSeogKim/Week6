@@ -1,7 +1,7 @@
 package com.example.week6.service;
 
-import com.example.week6.controller.request.CommentRequestDto;
-import com.example.week6.controller.response.CommentResponseDto;
+import com.example.week6.controller.request.comment.CommentRequestDto;
+import com.example.week6.controller.response.comment.CommentResponseDto;
 import com.example.week6.controller.response.ResponseDto;
 import com.example.week6.domain.Comment;
 import com.example.week6.domain.Member;
@@ -30,12 +30,12 @@ public class CommentService {
   public ResponseDto<?> createComment(CommentRequestDto requestDto, HttpServletRequest request) {
     if (null == request.getHeader("RefreshToken")) {
       return ResponseDto.fail("MEMBER_NOT_FOUND",
-          "로그인이 필요합니다.");
+              "로그인이 필요합니다.");
     }
 
     if (null == request.getHeader("Authorization")) {
       return ResponseDto.fail("MEMBER_NOT_FOUND",
-          "로그인이 필요합니다.");
+              "로그인이 필요합니다.");
     }
 
     Member member = validateMember(request);
@@ -49,19 +49,19 @@ public class CommentService {
     }
 
     Comment comment = Comment.builder()
-        .member(member)
-        .post(post)
-        .content(requestDto.getContent())
-        .build();
+            .member(member)
+            .post(post)
+            .content(requestDto.getContent())
+            .build();
     commentRepository.save(comment);
     return ResponseDto.success(
-        CommentResponseDto.builder()
-            .id(comment.getId())
-            .author(comment.getMember().getUsername())
-            .content(comment.getContent())
-            .createdAt(comment.getCreatedAt())
-            .modifiedAt(comment.getModifiedAt())
-            .build()
+            CommentResponseDto.builder()
+                    .id(comment.getId())
+                    .author(comment.getMember().getUsername())
+                    .content(comment.getContent())
+                    .createdAt(comment.getCreatedAt())
+                    .modifiedAt(comment.getModifiedAt())
+                    .build()
     );
   }
 
@@ -77,13 +77,13 @@ public class CommentService {
 
     for (Comment comment : commentList) {
       commentResponseDtoList.add(
-          CommentResponseDto.builder()
-              .id(comment.getId())
-              .author(comment.getMember().getUsername())
-              .content(comment.getContent())
-              .createdAt(comment.getCreatedAt())
-              .modifiedAt(comment.getModifiedAt())
-              .build()
+              CommentResponseDto.builder()
+                      .id(comment.getId())
+                      .author(comment.getMember().getUsername())
+                      .content(comment.getContent())
+                      .createdAt(comment.getCreatedAt())
+                      .modifiedAt(comment.getModifiedAt())
+                      .build()
       );
     }
     return ResponseDto.success(commentResponseDtoList);
@@ -93,12 +93,12 @@ public class CommentService {
   public ResponseDto<?> updateComment(Long id, CommentRequestDto requestDto, HttpServletRequest request) {
     if (null == request.getHeader("RefreshToken")) {
       return ResponseDto.fail("MEMBER_NOT_FOUND",
-          "로그인이 필요합니다.");
+              "로그인이 필요합니다.");
     }
 
     if (null == request.getHeader("Authorization")) {
       return ResponseDto.fail("MEMBER_NOT_FOUND",
-          "로그인이 필요합니다.");
+              "로그인이 필요합니다.");
     }
 
     Member member = validateMember(request);
@@ -122,13 +122,13 @@ public class CommentService {
 
     comment.update(requestDto);
     return ResponseDto.success(
-        CommentResponseDto.builder()
-            .id(comment.getId())
-            .author(comment.getMember().getUsername())
-            .content(comment.getContent())
-            .createdAt(comment.getCreatedAt())
-            .modifiedAt(comment.getModifiedAt())
-            .build()
+            CommentResponseDto.builder()
+                    .id(comment.getId())
+                    .author(comment.getMember().getUsername())
+                    .content(comment.getContent())
+                    .createdAt(comment.getCreatedAt())
+                    .modifiedAt(comment.getModifiedAt())
+                    .build()
     );
   }
 
@@ -136,12 +136,12 @@ public class CommentService {
   public ResponseDto<?> deleteComment(Long id, HttpServletRequest request) {
     if (null == request.getHeader("RefreshToken")) {
       return ResponseDto.fail("MEMBER_NOT_FOUND",
-          "로그인이 필요합니다.");
+              "로그인이 필요합니다.");
     }
 
     if (null == request.getHeader("Authorization")) {
       return ResponseDto.fail("MEMBER_NOT_FOUND",
-          "로그인이 필요합니다.");
+              "로그인이 필요합니다.");
     }
 
     Member member = validateMember(request);

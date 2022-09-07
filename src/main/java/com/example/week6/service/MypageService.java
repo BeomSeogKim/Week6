@@ -1,6 +1,8 @@
 package com.example.week6.service;
 
 import com.example.week6.controller.response.*;
+import com.example.week6.controller.response.comment.CommentResponseDto;
+import com.example.week6.controller.response.post.AllPostResponseDto;
 import com.example.week6.domain.*;
 import com.example.week6.jwt.TokenProvider;
 import com.example.week6.repository.CommentLikeRepository;
