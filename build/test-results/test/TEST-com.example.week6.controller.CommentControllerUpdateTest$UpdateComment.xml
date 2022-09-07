@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="생성 테스트" tests="6" skipped="0" failures="0" errors="0" timestamp="2022-09-07T11:58:01" hostname="Tommyui-MacBookAir.local" time="0.003">
+  <properties/>
+  <testcase name="Refresh-Token" classname="com.example.week6.controller.CommentControllerUpdateTest$UpdateComment" time="0.001"/>
+  <testcase name="Authorization" classname="com.example.week6.controller.CommentControllerUpdateTest$UpdateComment" time="0.0"/>
+  <testcase name="member is null" classname="com.example.week6.controller.CommentControllerUpdateTest$UpdateComment" time="0.0"/>
+  <testcase name="post is null" classname="com.example.week6.controller.CommentControllerUpdateTest$UpdateComment" time="0.0"/>
+  <testcase name="comment is null" classname="com.example.week6.controller.CommentControllerUpdateTest$UpdateComment" time="0.0"/>
+  <testcase name="member가 다를 경우" classname="com.example.week6.controller.CommentControllerUpdateTest$UpdateComment" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

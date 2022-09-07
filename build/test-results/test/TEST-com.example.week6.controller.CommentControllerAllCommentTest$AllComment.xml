@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="전체 조회 - 실패" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-09-07T11:58:01" hostname="Tommyui-MacBookAir.local" time="0.0">
+  <properties/>
+  <testcase name="post is null" classname="com.example.week6.controller.CommentControllerAllCommentTest$AllComment" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
