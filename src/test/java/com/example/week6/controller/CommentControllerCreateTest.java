@@ -1,6 +1,6 @@
 package com.example.week6.controller;
 
-import com.example.week6.controller.request.CommentRequestDto;
+import com.example.week6.controller.request.comment.CommentRequestDto;
 import com.example.week6.controller.response.ResponseDto;
 import com.example.week6.domain.Member;
 import com.example.week6.domain.Post;
@@ -12,8 +12,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
-
-import javax.servlet.http.HttpServletRequest;
 
 class CommentControllerCreateTest {
 
