@@ -1,12 +1,13 @@
-package com.example.week6.controller.response;
+package com.example.week6.controller.response.mypage;
 
 
+import com.example.week6.controller.response.comment.CommentResponseDto;
+import com.example.week6.controller.response.post.AllPostResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
