@@ -1,6 +1,6 @@
 package com.example.week6.controller;
 
-import com.example.week6.controller.request.PostRequestDto;
+import com.example.week6.controller.request.post.PostRequestDto;
 import com.example.week6.controller.response.ResponseDto;
 import com.example.week6.service.PostService;
 import lombok.RequiredArgsConstructor;

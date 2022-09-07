@@ -1,4 +1,4 @@
-package com.example.week6.controller.response.post;
+package com.example.week6.controller.response;
 
 import com.example.week6.controller.response.comment.CommentResponseDto;
 import lombok.AllArgsConstructor;

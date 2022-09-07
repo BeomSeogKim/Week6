@@ -1,9 +1,9 @@
 package com.example.week6.controller;
 
 
-import com.example.week6.controller.request.DuplicateRequestDto;
-import com.example.week6.controller.request.LoginRequestDto;
-import com.example.week6.controller.request.MemberRequestDto;
+import com.example.week6.controller.request.member.DuplicateRequestDto;
+import com.example.week6.controller.request.member.LoginRequestDto;
+import com.example.week6.controller.request.member.MemberRequestDto;
 import com.example.week6.controller.response.ResponseDto;
 import com.example.week6.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -40,13 +40,6 @@ public class MemberController {
   ) {
     return memberService.login(requestDto, response);
   }
-
-
-
-//  @RequestMapping(value = "/api/auth/member/reissue", method = RequestMethod.POST)
-//  public ResponseDto<?> reissue(HttpServletRequest request, HttpServletResponse response) {
-//    return memberService.reissue(request, response);
-//  }
 
   @RequestMapping(value = "/api/member/logout", method = RequestMethod.POST)
   public ResponseDto<?> logout(HttpServletRequest request) {

@@ -1,4 +1,4 @@
-package com.example.week6.controller.response.mypage;
+package com.example.week6.controller.response;
 
 
 import com.example.week6.controller.response.comment.CommentResponseDto;
