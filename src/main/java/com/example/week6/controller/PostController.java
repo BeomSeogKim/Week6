@@ -36,22 +36,22 @@ public class PostController {
     }
 
   //게시글 수정
-  @RequestMapping(value = "/api/post/{id}", method = RequestMethod.PUT)
-  public ResponseDto<?> updatePost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto,
-      HttpServletRequest request) {
-    return postService.updatePost(id, postRequestDto, request);
-  }
+//  @RequestMapping(value = "/api/post/{id}", method = RequestMethod.PUT)
+//  public ResponseDto<?> updatePost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto,
+//      HttpServletRequest request) {
+//    return postService.updatePost(id, postRequestDto, request);
+//  }
 
 
-    // == 수정중 건드리지 마세요!! ==//
-//    @GetMapping("value = \"/api/post/{id}\"")
-//    public ResponseDto<?> updatePost(@PathVariable Long id,
-//                                     @RequestPart("file") MultipartFile multipartFile,
-//                                     @RequestPart("title") String title,
-//                                     @RequestPart("content") String content,
-//                                     HttpServletRequest request) {
-//      return postService.updatePost(id, multipartFile, title, content, request);
-//    }
+     //== 수정중 건드리지 마세요!! ==//
+    @PutMapping(value = "/api/post/{id}")
+    public ResponseDto<?> updatePost(@PathVariable Long id,
+                                     @RequestPart("file") MultipartFile multipartFile,
+                                     @RequestPart("title") String title,
+                                     @RequestPart("content") String content,
+                                     HttpServletRequest request) {
+      return postService.updatePost(id, multipartFile, title, content, request);
+    }
 
     // 게시글 삭제
     @RequestMapping(value = "/api/post/{id}", method = RequestMethod.DELETE)

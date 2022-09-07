@@ -60,10 +60,10 @@ public class Post extends Timestamped {
     member.getPosts().add(this);
   }
 
-  public void update(PostRequestDto postRequestDto) {
-    this.title = postRequestDto.getTitle();
-    this.content = postRequestDto.getContent();
-  }
+//  public void update(PostRequestDto postRequestDto) {
+//    this.title = postRequestDto.getTitle();
+//    this.content = postRequestDto.getContent();
+//  }
 
   public boolean validateMember(Member member) {
     return !this.member.equals(member);
@@ -83,4 +83,10 @@ public class Post extends Timestamped {
     this.numberOfWatch += 1;
   }
 
+  public void update(String title,String content, String imageUrl, String imageFilename) {
+    this.content = content;
+    this.title = title;
+    this.imageUrl = imageUrl;
+    this.imageFilename = imageFilename;
+  }
 }
