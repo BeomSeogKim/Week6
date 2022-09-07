@@ -1,6 +1,7 @@
 package com.example.week6.controller;
 
 import com.example.week6.controller.request.CommentRequestDto;
+import com.example.week6.controller.request.CommentUpdateRequestDto;
 import com.example.week6.controller.response.ResponseDto;
 import com.example.week6.service.CommentService;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class CommentController {
   }
 
   @RequestMapping(value = "/api/comment/{id}", method = RequestMethod.PUT)
-  public ResponseDto<?> updateComment(@PathVariable Long id, @RequestBody CommentRequestDto requestDto,
+  public ResponseDto<?> updateComment(@PathVariable Long id, @RequestBody CommentUpdateRequestDto requestDto,
       HttpServletRequest request) {
     return commentService.updateComment(id, requestDto, request);
   }

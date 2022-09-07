@@ -18,7 +18,7 @@ public class TemporaryPostResponseDto {
     private String content;
     private String author;
     private String imageUrl;
-    private List<CommentResponseDto> commentList;
+    private List<AllCommentResponseDto> commentList;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 }

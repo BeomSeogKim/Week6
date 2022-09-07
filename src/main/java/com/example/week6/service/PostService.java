@@ -3,10 +3,7 @@ package com.example.week6.service;
 
 import com.example.week6.AWSS3.AwsS3Service;
 import com.example.week6.controller.request.PostRequestDto;
-import com.example.week6.controller.response.AllPostResponseDto;
-import com.example.week6.controller.response.CommentResponseDto;
-import com.example.week6.controller.response.ResponseDto;
-import com.example.week6.controller.response.TemporaryPostResponseDto;
+import com.example.week6.controller.response.*;
 import com.example.week6.domain.Comment;
 import com.example.week6.domain.Member;
 import com.example.week6.domain.Post;
@@ -79,7 +76,7 @@ public class PostService {
      * 해당 게시글의 Comment 가져오기
      */
     List<Comment> commentList = commentRepository.findAllByPost(post);
-    List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+    List<AllCommentResponseDto> commentResponseDtoList = new ArrayList<>();
 
     /**
      * 상세 게시글 조회시 조회수 카운트 up
@@ -90,12 +87,10 @@ public class PostService {
 
     for (Comment comment : commentList) {
       commentResponseDtoList.add(
-              CommentResponseDto.builder()
+              AllCommentResponseDto.builder()
                       .id(comment.getId())
                       .author(comment.getMember().getUsername())
                       .content(comment.getContent())
-                      .createdAt(comment.getCreatedAt())
-                      .modifiedAt(comment.getModifiedAt())
                       .build()
       );
     }

@@ -1,6 +1,7 @@
 package com.example.week6.domain;
 
 import com.example.week6.controller.request.CommentRequestDto;
+import com.example.week6.controller.request.CommentUpdateRequestDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -46,7 +47,7 @@ public class Comment extends Timestamped {
     this.content = content;
   }
 
-  public void update(CommentRequestDto commentRequestDto) {
+  public void update(CommentUpdateRequestDto commentRequestDto) {
     this.content = commentRequestDto.getContent();
   }
 

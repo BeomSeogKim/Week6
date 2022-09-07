@@ -1,6 +1,8 @@
 package com.example.week6.service;
 
 import com.example.week6.controller.request.CommentRequestDto;
+import com.example.week6.controller.request.CommentUpdateRequestDto;
+import com.example.week6.controller.response.AllCommentResponseDto;
 import com.example.week6.controller.response.CommentResponseDto;
 import com.example.week6.controller.response.ResponseDto;
 import com.example.week6.domain.Comment;
@@ -54,15 +56,16 @@ public class CommentService {
             .content(requestDto.getContent())
             .build();
     commentRepository.save(comment);
-    return ResponseDto.success(
-            CommentResponseDto.builder()
-                    .id(comment.getId())
-                    .author(comment.getMember().getUsername())
-                    .content(comment.getContent())
-                    .createdAt(comment.getCreatedAt())
-                    .modifiedAt(comment.getModifiedAt())
-                    .build()
-    );
+//    return ResponseDto.success(
+//            CommentResponseDto.builder()
+//                    .id(comment.getId())
+//                    .author(comment.getMember().getUsername())
+//                    .content(comment.getContent())
+//                    .createdAt(comment.getCreatedAt())
+//                    .modifiedAt(comment.getModifiedAt())
+//                    .build()
+//    );
+    return ResponseDto.success("성공적으로 등록되었습니다.");
   }
 
   @Transactional(readOnly = true)
@@ -73,16 +76,16 @@ public class CommentService {
     }
 
     List<Comment> commentList = commentRepository.findAllByPost(post);
-    List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
-
+//    List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+    List<AllCommentResponseDto> commentResponseDtoList = new ArrayList<>();
     for (Comment comment : commentList) {
       commentResponseDtoList.add(
-              CommentResponseDto.builder()
+              AllCommentResponseDto.builder()
                       .id(comment.getId())
                       .author(comment.getMember().getUsername())
                       .content(comment.getContent())
-                      .createdAt(comment.getCreatedAt())
-                      .modifiedAt(comment.getModifiedAt())
+//                      .createdAt(comment.getCreatedAt())
+//                      .modifiedAt(comment.getModifiedAt())
                       .build()
       );
     }
@@ -90,7 +93,7 @@ public class CommentService {
   }
 
   @Transactional
-  public ResponseDto<?> updateComment(Long id, CommentRequestDto requestDto, HttpServletRequest request) {
+  public ResponseDto<?> updateComment(Long id, CommentUpdateRequestDto requestDto, HttpServletRequest request) {
     if (null == request.getHeader("RefreshToken")) {
       return ResponseDto.fail("MEMBER_NOT_FOUND",
               "로그인이 필요합니다.");
@@ -106,10 +109,6 @@ public class CommentService {
       return ResponseDto.fail("INVALID_TOKEN", "Token이 유효하지 않습니다.");
     }
 
-    Post post = postService.isPresentPost(requestDto.getPostId());
-    if (null == post) {
-      return ResponseDto.fail("NOT_FOUND", "존재하지 않는 게시글 id 입니다.");
-    }
 
     Comment comment = isPresentComment(id);
     if (null == comment) {
@@ -121,15 +120,16 @@ public class CommentService {
     }
 
     comment.update(requestDto);
-    return ResponseDto.success(
-            CommentResponseDto.builder()
-                    .id(comment.getId())
-                    .author(comment.getMember().getUsername())
-                    .content(comment.getContent())
-                    .createdAt(comment.getCreatedAt())
-                    .modifiedAt(comment.getModifiedAt())
-                    .build()
-    );
+//    return ResponseDto.success(
+//            CommentResponseDto.builder()
+//                    .id(comment.getId())
+//                    .author(comment.getMember().getUsername())
+//                    .content(comment.getContent())
+//                    .createdAt(comment.getCreatedAt())
+//                    .modifiedAt(comment.getModifiedAt())
+//                    .build()
+//    );
+    return ResponseDto.success("수정이 성공적으로 완료되었습니다.");
   }
 
   @Transactional
@@ -159,7 +159,7 @@ public class CommentService {
     }
 
     commentRepository.delete(comment);
-    return ResponseDto.success("success");
+    return ResponseDto.success("삭제가 완료되었습니다.");
   }
 
   @Transactional(readOnly = true)
