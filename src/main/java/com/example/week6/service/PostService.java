@@ -3,10 +3,10 @@ package com.example.week6.service;
 
 import com.example.week6.AWSS3.AwsS3Service;
 import com.example.week6.controller.request.PostRequestDto;
+import com.example.week6.controller.response.AllPostResponseDto;
+import com.example.week6.controller.response.CommentResponseDto;
 import com.example.week6.controller.response.ResponseDto;
 import com.example.week6.controller.response.TemporaryPostResponseDto;
-import com.example.week6.controller.response.CommentResponseDto;
-import com.example.week6.controller.response.AllPostResponseDto;
 import com.example.week6.domain.Comment;
 import com.example.week6.domain.Member;
 import com.example.week6.domain.Post;
@@ -14,8 +14,6 @@ import com.example.week6.jwt.TokenProvider;
 import com.example.week6.repository.CommentRepository;
 import com.example.week6.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,34 +36,34 @@ public class PostService {
 
   private final TokenProvider tokenProvider;
 
-  @Transactional
-  public ResponseDto<?> createPost(PostRequestDto requestDto, HttpServletRequest request) {
-    // 작성자 검증
-    if (null == request.getHeader("RefreshToken")) {
-      return ResponseDto.fail("MEMBER_NOT_FOUND",
-              "로그인이 필요합니다.");
-    }
-
-    if (null == request.getHeader("Authorization")) {
-      return ResponseDto.fail("MEMBER_NOT_FOUND",
-              "로그인이 필요합니다.");
-    }
-
-    Member member = validateMember(request);
-
-    if (null == member) {
-      return ResponseDto.fail("INVALID_TOKEN", "Token이 유효하지 않습니다.");
-    }
-
-    Post post = Post.builder()
-            .title(requestDto.getTitle())
-            .content(requestDto.getContent())
-            .imageUrl(requestDto.getImageUrl())
-            .member(member)
-            .build();
-    postRepository.save(post);
-    return ResponseDto.success("성공적으로 게시글 작성이 완료 되었습니다.");
-  }
+//  @Transactional
+//  public ResponseDto<?> createPost(PostRequestDto requestDto, HttpServletRequest request) {
+//    // 작성자 검증
+//    if (null == request.getHeader("RefreshToken")) {
+//      return ResponseDto.fail("MEMBER_NOT_FOUND",
+//              "로그인이 필요합니다.");
+//    }
+//
+//    if (null == request.getHeader("Authorization")) {
+//      return ResponseDto.fail("MEMBER_NOT_FOUND",
+//              "로그인이 필요합니다.");
+//    }
+//
+//    Member member = validateMember(request);
+//
+//    if (null == member) {
+//      return ResponseDto.fail("INVALID_TOKEN", "Token이 유효하지 않습니다.");
+//    }
+//
+//    Post post = Post.builder()
+//            .title(requestDto.getTitle())
+//            .content(requestDto.getContent())
+//            .imageUrl(requestDto.getImageUrl())
+//            .member(member)
+//            .build();
+//    postRepository.save(post);
+//    return ResponseDto.success("성공적으로 게시글 작성이 완료 되었습니다.");
+//  }
 
 
   @Transactional
