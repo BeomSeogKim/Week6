@@ -16,6 +16,9 @@ public class MypageController {
     private final MypageService mypageService;
 
 
+    /**
+     * 회원이 활동한 내역들 포함
+     */
     @GetMapping("/api/mypage")
     public ResponseDto<?> getMyActs(HttpServletRequest request) {
         return mypageService.getAllMyActs(request);

@@ -1,6 +1,5 @@
 package com.example.week6.controller;
 
-import com.example.week6.controller.request.PostRequestDto;
 import com.example.week6.controller.response.ResponseDto;
 import com.example.week6.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -23,27 +22,25 @@ public class PostController {
         return postService.save(multipartFile, title, content, request);
     }
 
-    // 상세 게시글 조회
+    /**
+     * 상세 게시글 조회
+     */
     @RequestMapping(value = "/api/post/{id}", method = RequestMethod.GET)
     public ResponseDto<?> getPost(@PathVariable Long id) {
         return postService.getPost(id);
     }
 
-    //전체 게시글 조회
+    /**
+     * 전체 게시글 조회
+     */
     @RequestMapping(value = "/api/list", method = RequestMethod.GET)
     public ResponseDto<?> getAllPosts() {
         return postService.getAllPost();
     }
 
-  //게시글 수정
-//  @RequestMapping(value = "/api/post/{id}", method = RequestMethod.PUT)
-//  public ResponseDto<?> updatePost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto,
-//      HttpServletRequest request) {
-//    return postService.updatePost(id, postRequestDto, request);
-//  }
-
-
-     //== 수정중 건드리지 마세요!! ==//
+    /**
+     * 게시글 수정
+     */
     @PutMapping(value = "/api/post/{id}")
     public ResponseDto<?> updatePost(@PathVariable Long id,
                                      @RequestPart("file") MultipartFile multipartFile,
@@ -53,7 +50,9 @@ public class PostController {
       return postService.updatePost(id, multipartFile, title, content, request);
     }
 
-    // 게시글 삭제
+    /**
+     * 게시글 삭제
+     */
     @RequestMapping(value = "/api/post/{id}", method = RequestMethod.DELETE)
     public ResponseDto<?> deletePost(@PathVariable Long id,
                                      HttpServletRequest request) {

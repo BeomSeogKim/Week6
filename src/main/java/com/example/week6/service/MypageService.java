@@ -29,10 +29,6 @@ public class MypageService {
     private final CommentLikeRepository commentLikeRepository;
     private final Qualify qualify;
 
-    // 내가 누른 좋아요 게시글 들 페이지들 가져오기
-    // 내가 작성한 게시글 가져오기
-    // 내가 작성한 댓글 가져오기
-
     public ResponseDto<?> getAllMyActs(HttpServletRequest request) {
 
         if (null == request.getHeader("RefreshToken")) {
@@ -62,13 +58,13 @@ public class MypageService {
                             .postId(post.getId())
                             .title(post.getTitle())
                             .imageUrl(post.getImageUrl())
-                            .createdTime(post.getCreatedAt())
                             .username(post.getMember().getUsername())
                             .watch(post.getNumberOfWatch())
                             .likes(post.getLikes().size())
                             .build()
             );
         }
+
         // 회원이 작성한 댓글 리스트 가져오기
         List<Comment> commentList = commentRepository.findAllByMemberId(member.getId());
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
@@ -94,7 +90,6 @@ public class MypageService {
                             .postId(post.getId())
                             .title(post.getTitle())
                             .imageUrl(post.getImageUrl())
-                            .createdTime(post.getCreatedAt())
                             .username(post.getMember().getUsername())
                             .watch(post.getNumberOfWatch())
                             .likes(post.getLikes().size())

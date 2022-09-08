@@ -3,16 +3,16 @@ package com.example.week6.service;
 
 import com.example.week6.controller.Qualify;
 import com.example.week6.controller.response.ResponseDto;
-import com.example.week6.domain.*;
+import com.example.week6.domain.Comment;
+import com.example.week6.domain.CommentLike;
+import com.example.week6.domain.Member;
 import com.example.week6.jwt.TokenProvider;
 import com.example.week6.repository.CommentLikeRepository;
 import com.example.week6.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

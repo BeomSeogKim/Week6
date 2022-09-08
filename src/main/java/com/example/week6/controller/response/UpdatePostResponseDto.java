@@ -9,7 +9,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberResponseDto {
-  private Long id;
-  private String username;
+public class UpdatePostResponseDto {
+    private Long postId;
+    private String title;
+    private String content;
+    private String imageUrl;
+    private String username;
 }

@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
@@ -19,6 +18,4 @@ public class TemporaryPostResponseDto {
     private String author;
     private String imageUrl;
     private List<AllCommentResponseDto> commentList;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
 }

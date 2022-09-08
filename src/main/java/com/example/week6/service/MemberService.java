@@ -81,7 +81,6 @@ public class MemberService {
     // 토큰 발급
     TokenDto tokenDto = tokenProvider.generateTokenDto(member);
     qualify.tokenToHeaders(tokenDto, response);
-//    tokenToHeaders(tokenDto, response);
 
     return ResponseDto.success(
               MemberResponseDto.builder()

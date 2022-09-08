@@ -1,5 +1,6 @@
 package com.example.week6.service;
 
+import com.example.week6.controller.Qualify;
 import com.example.week6.controller.request.CommentRequestDto;
 import com.example.week6.controller.request.CommentUpdateRequestDto;
 import com.example.week6.controller.response.AllCommentResponseDto;
@@ -27,6 +28,7 @@ public class CommentService {
 
   private final TokenProvider tokenProvider;
   private final PostService postService;
+  private final Qualify qualify;
 
   @Transactional
   public ResponseDto<?> createComment(CommentRequestDto requestDto, HttpServletRequest request) {
@@ -45,7 +47,7 @@ public class CommentService {
       return ResponseDto.fail("INVALID_TOKEN", "Token이 유효하지 않습니다.");
     }
 
-    Post post = postService.isPresentPost(requestDto.getPostId());
+    Post post = qualify.isPresentPost(requestDto.getPostId());
     if (null == post) {
       return ResponseDto.fail("NOT_FOUND", "존재하지 않는 게시글 id 입니다.");
     }
@@ -56,21 +58,18 @@ public class CommentService {
             .content(requestDto.getContent())
             .build();
     commentRepository.save(comment);
-//    return ResponseDto.success(
-//            CommentResponseDto.builder()
-//                    .id(comment.getId())
-//                    .author(comment.getMember().getUsername())
-//                    .content(comment.getContent())
-//                    .createdAt(comment.getCreatedAt())
-//                    .modifiedAt(comment.getModifiedAt())
-//                    .build()
-//    );
-    return ResponseDto.success("성공적으로 등록되었습니다.");
+    return ResponseDto.success(
+            AllCommentResponseDto.builder()
+                    .id(comment.getId())
+                    .author(comment.getMember().getUsername())
+                    .content(comment.getContent())
+                    .build()
+    );
   }
 
   @Transactional(readOnly = true)
   public ResponseDto<?> getAllCommentsByPost(Long postId) {
-    Post post = postService.isPresentPost(postId);
+    Post post = qualify.isPresentPost(postId);
     if (null == post) {
       return ResponseDto.fail("NOT_FOUND", "존재하지 않는 게시글 id 입니다.");
     }
@@ -84,8 +83,6 @@ public class CommentService {
                       .id(comment.getId())
                       .author(comment.getMember().getUsername())
                       .content(comment.getContent())
-//                      .createdAt(comment.getCreatedAt())
-//                      .modifiedAt(comment.getModifiedAt())
                       .build()
       );
     }
@@ -120,16 +117,13 @@ public class CommentService {
     }
 
     comment.update(requestDto);
-//    return ResponseDto.success(
-//            CommentResponseDto.builder()
-//                    .id(comment.getId())
-//                    .author(comment.getMember().getUsername())
-//                    .content(comment.getContent())
-//                    .createdAt(comment.getCreatedAt())
-//                    .modifiedAt(comment.getModifiedAt())
-//                    .build()
-//    );
-    return ResponseDto.success("수정이 성공적으로 완료되었습니다.");
+    return ResponseDto.success(
+            CommentResponseDto.builder()
+                    .id(comment.getId())
+                    .author(comment.getMember().getUsername())
+                    .content(comment.getContent())
+                    .build()
+    );
   }
 
   @Transactional
